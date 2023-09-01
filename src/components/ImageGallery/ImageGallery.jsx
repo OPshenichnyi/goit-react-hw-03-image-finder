@@ -1,9 +1,9 @@
 
 
-export const ImageGallery = ({_, Children}) => {
+export const ImageGallery = ({children}) => {
     return (
         <ul className="gallery">
-            {Children}
+            {children}
         </ul>
     )
 }
