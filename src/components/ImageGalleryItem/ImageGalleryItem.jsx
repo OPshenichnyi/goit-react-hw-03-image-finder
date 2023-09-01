@@ -1,7 +1,10 @@
-export const ImageGalleryItem =()=> {
+export const ImageGalleryItem = (content) => {
+    console.log(content);
     return (
-        <li className="gallery-item">
-            <img src="" alt="" />
-        </li>
+            content.map(({ id, webformatURL, largeImageURL }) => (
+                <li className="gallery-item" key={id}>
+                    <img src={webformatURL} alt={largeImageURL} />
+                </li> 
+            ))
     )
 }

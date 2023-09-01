@@ -13,16 +13,23 @@ export class App extends Component {
     page: 1,
     perPage: 12,
   }
-  onSubmit = (searchTxt) => {
-    getApi(searchTxt.name, this.state.page, this.state.perPage)
-      .then(function (response) {
-        console.log(response.data.hits)
-        this.setState({ content: response.data.hits })
-       
-      }) 
+
+  addContent = ({data:{hits}}) => {
+    this.setState(prevState => ({ content: prevState.content.concat(hits) }))
+    
+  }
+
+  onSubmit = async (searchTxt) => {
+    this.setState({ content: [] });
+    await getApi(searchTxt.name, this.state.page, this.state.perPage)
+      .then((respons) => {
+        this.addContent(respons);
+      })
+    
   }
 
   render() {
+    console.log(this.state.content);
     return (
       <div>
 
@@ -30,7 +37,9 @@ export class App extends Component {
           onSubmit={this.onSubmit}
         ></Searchbar>
         <ImageGallery>
-          <ImageGalleryItem>
+          <ImageGalleryItem
+          content ={this.state.content}
+          >
           </ImageGalleryItem>
         </ImageGallery>
         {this.state.loadMore === true && (
