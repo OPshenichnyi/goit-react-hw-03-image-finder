@@ -8,34 +8,37 @@ import { Component } from "react";
 
 export class App extends Component {
   state = {
-    loadMore: false,
+    searchTxt: '',
+    loadMore: 'false',
     content: [],
     page: 1,
     perPage: 12,
   }
 
-  componentDidUpdate =()=> {
-    if (this.state.content.length > 0) {
-      // this.setState({ loadMore: true })
+  componentDidUpdate(prevProps, prevState,) {
+    if (this.state.content.length !== prevState.content.length) {
+      this.setState({loadMore : true})
     }
-
   }
 
-  componentDidMount() {
-    
   }
-
-  addContent = ({data:{hits}}) => {
-    this.setState(prevState => ({ content: prevState.content.concat(hits) }))
-    
-  }
-
-  onSubmit = (searchTxt) => {
-    this.setState({ content: [] });
-     getApi(searchTxt.name, this.state.page, this.state.perPage)
+  
+  addContent = () => {
+    getApi(this.state.searchTxt, this.state.page, this.state.perPage)
       .then((respons) => {
-        this.addContent(respons);
+        console.log(respons);
+        this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
       })
+  }
+
+onSubmit = (searchTxt) => {
+    this.setState(({searchTxt: searchTxt}))
+    this.setState({ content: [] });
+    this.addContent()
+  }
+
+  loadMore = () => {
+    this.addContent();
     
   }
 
@@ -52,7 +55,9 @@ export class App extends Component {
           </ImageGalleryItem>
         </ImageGallery>
         {this.state.loadMore === true && (
-          <ButtonLoadMore>
+          <ButtonLoadMore
+            loadMore={this.loadMore}
+          >
           </ButtonLoadMore>
         )}
       </div>
