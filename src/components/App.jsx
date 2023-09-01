@@ -14,6 +14,17 @@ export class App extends Component {
     perPage: 12,
   }
 
+  componentDidUpdate =()=> {
+    if (this.state.content.length > 0) {
+      // this.setState({ loadMore: true })
+    }
+
+  }
+
+  componentDidMount() {
+    
+  }
+
   addContent = ({data:{hits}}) => {
     this.setState(prevState => ({ content: prevState.content.concat(hits) }))
     
@@ -29,7 +40,6 @@ export class App extends Component {
   }
 
   render() {
-    console.log();
     return (
       <div>
         <Searchbar
