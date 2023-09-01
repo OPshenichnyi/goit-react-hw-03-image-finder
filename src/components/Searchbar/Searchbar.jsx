@@ -6,11 +6,14 @@ export const Searchbar = ({ onSubmit }) => {
         <header className="searchbar">
             <Formik
                 initialValues={{ name: '' }}
+                
                 onSubmit={(values, actions) => {
-                    onSubmit(values)
+                    onSubmit(values);
+
                     setTimeout(() => {
-                        actions.resetForm();
+                        actions.resetForm()
                     }, 500);
+
                 }}
             >
                 {props =>(

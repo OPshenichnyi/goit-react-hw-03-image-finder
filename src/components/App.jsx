@@ -15,31 +15,25 @@ export class App extends Component {
     perPage: 12,
   }
 
-  componentDidUpdate(prevProps, prevState,) {
+  onSubmit = (searchTxt) => {
+    this.setState(({ searchTxt: searchTxt, content: [] }))
+  }
+
+  componentDidUpdate(_, prevState,) {
+    if (this.state.searchTxt !== prevState.searchTxt || this.state.page !== prevState.page) {
+      getApi(this.state.searchTxt, this.state.page, this.state.perPage)
+        .then((respons) => {
+          this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
+        })
+    }
     if (this.state.content.length !== prevState.content.length) {
       this.setState({loadMore : true})
     }
   }
-
-  }
-  
-  addContent = () => {
-    getApi(this.state.searchTxt, this.state.page, this.state.perPage)
-      .then((respons) => {
-        console.log(respons);
-        this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
-      })
-  }
-
-onSubmit = (searchTxt) => {
-    this.setState(({searchTxt: searchTxt}))
-    this.setState({ content: [] });
-    this.addContent()
-  }
-
+ 
+ 
   loadMore = () => {
-    this.addContent();
-    
+    this.setState(prevState => ({ page: prevState.page + 1 }))
   }
 
   render() {
