@@ -47,6 +47,7 @@ box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     }
 
     input{
+      
       display: inline-block;
       width: 100%;
       font: inherit;

@@ -1,8 +1,8 @@
 import { StyleImageGallery } from "./ImageGallery.styled"
 
-export const ImageGallery = ({children}) => {
+export const ImageGallery = ({ children, onModalWindow }) => {
     return (
-        <StyleImageGallery className="gallery">
+        <StyleImageGallery className="gallery" onClick={onModalWindow}>
             {children}
         </StyleImageGallery>
     )
