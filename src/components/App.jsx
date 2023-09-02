@@ -26,10 +26,14 @@ export class App extends Component {
       this.setState({ loadMore: false, isLoad: true })
       getApi(this.state.searchTxt, this.state.page, this.state.perPage)
         .then((respons) => {
-          this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
+          console.log(respons.data.hits.length);
+          if (respons.data.hits.length > 0) {
+            this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
+            this.setState({ loadMore: true })
+          }
         })
         .finally(
-          this.setState({ loadMore: true, isLoad: false })
+          this.setState({ isLoad: false })
       )
     }
   }
@@ -71,13 +75,15 @@ export class App extends Component {
         <Searchbar
           onSubmit={this.onSubmit}></Searchbar>
 
-        <ImageGallery
-          onModalWindow={this.onModalWindow}>
-          
-          <ImageGalleryItem
-            content={this.state.content}></ImageGalleryItem>
-          
-        </ImageGallery>
+        {this.state.content.length > 0 &&(
+          <ImageGallery
+            onModalWindow={this.onModalWindow}>
+
+            <ImageGalleryItem
+              content={this.state.content}></ImageGalleryItem>
+
+          </ImageGallery>
+        )}
 
         {this.state.isLoad && (
           <ThreeDots
