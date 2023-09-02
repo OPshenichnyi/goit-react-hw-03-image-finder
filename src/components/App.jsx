@@ -25,10 +25,13 @@ export class App extends Component {
         .then((respons) => {
           this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
         })
+        .finally(
+          this.setState({ loadMore: true })
+      )
     }
-    if (this.state.content.length !== prevState.content.length) {
-      this.setState({loadMore : true})
-    }
+    // if (this.state.content.length !== prevState.content.length) {
+    //   this.setState({loadMore : true})
+    // }
   }
  
  
@@ -38,7 +41,14 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr',
+          gridGap: '16px',
+          paddingBottom: '24px'
+      }}
+      >
         <Searchbar
           onSubmit={this.onSubmit}
         ></Searchbar>

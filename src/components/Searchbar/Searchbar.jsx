@@ -1,9 +1,10 @@
 import { Formik } from 'formik';
+import { CssSearchbar } from './Searchbar.styled';
 
 export const Searchbar = ({ onSubmit }) => {
-    
+
     return (
-        <header className="searchbar">
+        <CssSearchbar className="searchbar">
             <Formik
                 initialValues={{ name: '' }}
                 
@@ -37,7 +38,7 @@ export const Searchbar = ({ onSubmit }) => {
                     </form>
                 )}
             </Formik>
-        </header> 
+        </CssSearchbar> 
     )
 }
 
