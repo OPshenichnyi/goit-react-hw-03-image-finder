@@ -35,6 +35,7 @@ export class App extends Component {
               content: prevState.content.concat(respons.data.hits)
             }))
             this.setState({ loadMore: true })
+            this.setState({notFound: false})
           }
           else {
             this.setState({ notFound: true })
