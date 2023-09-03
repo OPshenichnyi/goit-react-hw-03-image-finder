@@ -32,7 +32,6 @@ box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
         width: 48px;
         height: 48px;
         border: 0;
-        background-image: url('https://icons8.com/icon/7695/search');
         background-size: 40%;
         background-repeat: no-repeat;
         background-position: center;

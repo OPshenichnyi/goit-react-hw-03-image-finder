@@ -1,5 +1,7 @@
 import { Formik } from 'formik';
 import { CssSearchbar } from './Searchbar.styled';
+import { ReactComponent as Icon } from 'icons/search.svg';
+
 
 export const Searchbar = ({ onSubmit }) => {
 
@@ -8,7 +10,9 @@ export const Searchbar = ({ onSubmit }) => {
             <Formik
                 initialValues={{ name: '' }}
                 
+
                 onSubmit={(values, actions) => {
+                    
                     onSubmit(values);
 
                     setTimeout(() => {
@@ -16,11 +20,14 @@ export const Searchbar = ({ onSubmit }) => {
                     }, 500);
 
                 }}
+
+                
             >
-                {props =>(
+                {props => (
+                    
                     <form onSubmit={props.handleSubmit} className="form">
                         <button type="submit" className="button">
-                            <span className="button-label">Search</span>
+                            <Icon></Icon>
                         </button>
                         <input
                             className="input"

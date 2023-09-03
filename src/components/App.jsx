@@ -17,24 +17,34 @@ export class App extends Component {
     isLoad: false,
     isModal: false,
     imgModal: '',
+    error: false,
+    notFound: false,
   }
 
 
 
   componentDidUpdate(_, prevState,) {
-    if (this.state.searchTxt !== prevState.searchTxt || this.state.page !== prevState.page) {
+    const { searchTxt, page, perPage } = this.state
+
+    if (searchTxt !== prevState.searchTxt || page !== prevState.page) {
       this.setState({ loadMore: false, isLoad: true })
-      getApi(this.state.searchTxt, this.state.page, this.state.perPage)
+      getApi(searchTxt, page, perPage)
         .then((respons) => {
-          console.log(respons.data.hits.length);
           if (respons.data.hits.length > 0) {
-            this.setState(prevState => ({ content: prevState.content.concat(respons.data.hits) }))
+            this.setState(prevState => ({
+              content: prevState.content.concat(respons.data.hits)
+            }))
             this.setState({ loadMore: true })
+          }
+          else {
+            this.setState({ notFound: true })
           }
         })
         .finally(
           this.setState({ isLoad: false })
-      )
+      ).catch((error) => {
+        this.setState({ error: true })
+      })
     }
   }
   
@@ -49,6 +59,9 @@ export class App extends Component {
   }
 
   onSubmit = (searchTxt) => {
+    if (searchTxt.name.length < 1) {
+      return
+    }
     this.setState(({ searchTxt: searchTxt, content: [] }))
   }
   
@@ -96,6 +109,14 @@ export class App extends Component {
           <ButtonLoadMore
             loadMore={this.loadMore}></ButtonLoadMore>
         )}
+        {this.state.error && <div
+          style={{ margin: 'auto' }}>
+          ERROR CONNECTION PLEASE RELOAD THE PAGE</div>}
+        
+        {this.state.notFound && <div
+          style={{ margin: 'auto' }}>
+          NOT FOUND</div>}
+        
       </div>
     );
   }
