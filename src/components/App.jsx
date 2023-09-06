@@ -19,27 +19,34 @@ export class App extends Component {
     imgModal: '',
     error: false,
     notFound: false,
+    totalHits: 0, 
   }
 
 
 
   componentDidUpdate(_, prevState,) {
-    const { searchTxt, page, perPage } = this.state
+    const { searchTxt, page, perPage, totalHits } = this.state
 
     if (searchTxt !== prevState.searchTxt || page !== prevState.page) {
       this.setState({ loadMore: false, isLoad: true })
       getApi(searchTxt, page, perPage)
         .then((respons) => {
+
           if (respons.data.hits.length > 0) {
             this.setState(prevState => ({
-              content: prevState.content.concat(respons.data.hits)
+              content: prevState.content.concat(respons.data.hits),
             }))
             this.setState({ loadMore: true })
-            this.setState({notFound: false})
+            this.setState({ notFound: false })
+            this.setState({ totalHits: Math.round(respons.data.totalHits / perPage) - page })
+            if (totalHits === 1) {
+              this.setState({ loadMore: false })
+            }
           }
           else {
             this.setState({ notFound: true })
           }
+
         })
         .finally(
           this.setState({ isLoad: false })
@@ -60,10 +67,11 @@ export class App extends Component {
   }
 
   onSubmit = (searchTxt) => {
-    if (searchTxt.name.length < 1) {
+    if (!searchTxt.name) {
       return
     }
-    this.setState(({ searchTxt: searchTxt, content: [] }))
+    this.setState(({ searchTxt: searchTxt, content: [], page: 1 }))
+    
   }
   
   loadMore = () => {
